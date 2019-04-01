@@ -30,7 +30,8 @@ module Travis
                 sh.cmd "cat #{dir}/#{sparse_checkout} >> #{dir}/.git/info/sparse-checkout", assert: true, retry: true
                 sh.cmd "git -C #{dir} reset --hard", assert: true, timing: false
               else
-                sh.cmd "git clone #{clone_args} #{data.source_url} #{dir}", assert: false, retry: true
+                #sh.cmd "git clone #{clone_args} #{data.source_url} #{dir}", assert: false, retry: true
+                sh.cmd "git clone #{clone_args} git@github.com/datablocks/adcenter #{dir}", assert: false, retry: true
                 warn_github_status
               end
             end
@@ -41,7 +42,7 @@ module Travis
           end
 
           def fetch_ref
-            sh.cmd "git fetch origin +#{data.ref}:", assert: true, retry: true
+            sh.cmd "git fetch origin +#{ENV['PR_ID']}:", assert: true, retry: true
           end
 
           def fetch_ref?
@@ -49,7 +50,7 @@ module Travis
           end
 
           def checkout
-            sh.cmd "git checkout -qf #{checkout_ref}", timing: false
+            sh.cmd "git checkout -qf FETCH_HEAD", timing: false
           end
 
           def checkout_ref
@@ -60,7 +61,7 @@ module Travis
 
           def clone_args
             args = depth_flag
-            args << " --branch=#{tag || branch}" unless data.ref
+            # args << " --branch=#{tag || branch}" unless data.ref
             args << " --quiet" if quiet?
             args
           end

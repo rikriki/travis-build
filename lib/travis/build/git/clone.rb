@@ -31,7 +31,7 @@ module Travis
                 sh.cmd "git -C #{dir} reset --hard", assert: true, timing: false
               else
                 #sh.cmd "git clone #{clone_args} #{data.source_url} #{dir}", assert: false, retry: true
-                sh.cmd "git clone #{clone_args} git@github.com/datablocks/adcenter #{dir}", assert: false, retry: true
+                sh.cmd "git clone #{clone_args} git@github.com:datablocks/adcenter.git #{dir}", assert: false, retry: true
                 warn_github_status
               end
             end

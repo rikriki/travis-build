@@ -46,7 +46,7 @@ module Travis
           end
 
           def fetch_ref?
-            !!data.ref
+            !!ENV['PR_ID']
           end
 
           def checkout
